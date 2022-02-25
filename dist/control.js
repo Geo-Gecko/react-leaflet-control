@@ -31,9 +31,14 @@ var DumbControl = _leaflet.Control.extend({
     handleOff: function noop() {}
   },
 
-  onAdd: function onAdd() /* map */{
+  onAdd: function onAdd(map) /* map */{
     var _controlDiv = _leaflet.DomUtil.create("div", this.options.className);
-    _leaflet.DomEvent.disableClickPropagation(_controlDiv);
+    if (_controlDiv.className.includes("click-propn")) {
+      _controlDiv.addEventListener('mouseenter', e => this._map.dragging.disable())
+      _controlDiv.addEventListener('mouseleave', e => this._map.dragging.enable())
+    } else {
+      _leaflet.DomEvent.disableClickPropagation(_controlDiv);
+    }
     return _controlDiv;
   },
   onRemove: function onRemove(map) {
